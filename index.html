@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lens & Letter Co. | East Tennessee Greeting Cards</title>
+  <style>
+    /* --- Earthy Nature Styles (from Index10/Index9) --- */
+    body { 
+      margin: 0; padding: 1rem; 
+      font-family: 'Georgia', serif; 
+      background-color: #f4f1ea; 
+      background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+      color: #3e442b; 
+    }
+
+    /* --- Info Section (Added from Index9) --- */
+    .info-section {
+      max-width: 900px; margin: 3rem auto; padding: 2.5rem; 
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 15px; border: 1px solid #d4cdc3;
+      text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .info-section h1 { 
+        font-weight: 400; letter-spacing: 3px; text-transform: uppercase; 
+        margin-bottom: 0.5rem; color: #5a6248; 
+    }
+    .tagline { font-style: italic; color: #8c7d6c; margin-bottom: 2rem; display: block; font-size: 1.1rem; }
+    
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; text-align: left; margin-top: 2rem; }
+    .info-block h3 { border-bottom: 2px solid #a3ad8d; padding-bottom: 8px; margin-bottom: 12px; font-weight: 600; color: #5a6248; }
+    .info-block p { font-size: 0.95rem; color: #4a4a4a; line-height: 1.6; }
+
+    /* --- Tab Navigation --- */
+    .tabs { display: flex; justify-content: center; gap: 15px; margin: 3rem 0; }
+    .tab-btn {
+      padding: 12px 35px; border: 2px solid #a3ad8d; background: white;
+      border-radius: 50px; cursor: pointer; font-weight: bold; color: #5a6248;
+      transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      text-transform: uppercase; font-size: 0.85rem;
+    }
+    .tab-btn.active { background: #5a6248; color: white; border-color: #5a6248; transform: scale(1.05); }
+
+    /* --- Gallery Grid (Restored to Index.html sizing) --- */
+    .gallery-container { display: none; max-width: 1300px; margin: 0 auto; }
+    .gallery-container.active { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+      gap: 25px; 
+    }
+
+    /* --- Card Style --- */
+    .card {
+      position: relative;
+      background: #fff; border-radius: 12px; overflow: hidden;
+      cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+    .card:hover { transform: translateY(-10px); }
+    .card:hover img { transform: scale(1.15); }
+
+    /* Ratio Classes (from Index.html) */
+    .portrait .card { aspect-ratio: 5 / 7; }
+    .landscape .card { aspect-ratio: 7 / 5; }
+
+    /* --- Watermark Overlay --- */
+    .watermark {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 1rem; font-weight: bold;
+      pointer-events: none; text-transform: uppercase;
+      z-index: 5; font-family: sans-serif; text-align: center; width: 100%;
+    }
+
+    /* --- Lightbox --- */
+    .lightbox {
+      display: none; position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.95);
+      justify-content: center; align-items: center; z-index: 2000;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox-content { position: relative; display: flex; justify-content: center; align-items: center; }
+    .lightbox img { 
+      max-width: 90vw; max-height: 85vh; 
+      border: 3px solid white; border-radius: 4px;
+    }
+    .lightbox .watermark { font-size: 3rem; color: rgba(255,255,255,0.15); }
+
+    .nav-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.1); color: white; border: none;
+      width: 60px; height: 60px; border-radius: 50%; font-size: 30px;
+      cursor: pointer; transition: background 0.3s;
+    }
+    .nav-btn:hover { background: rgba(255,255,255,0.3); }
+    .prev { left: 20px; }
+    .next { right: 20px; }
+    .close { position: absolute; top: 20px; right: 30px; color: white; font-size: 50px; cursor: pointer; z-index: 2100; }
+
+    @media (max-width: 768px) {
+      .info-grid { grid-template-columns: 1fr; }
+      .gallery-container.active { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .nav-btn { width: 40px; height: 40px; font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="info-section">
+    <h1>Lens & Letter Co.</h1>
+    <span class="tagline">Capturing East Tennessee, one card at a time.</span>
+    <div class="info-grid">
+      <div class="info-block">
+        <h3>Our Mission</h3>
+        <p>At Lens & Letter Co., we celebrate the beauty, heart, and spirit of East Tennessee through personalized greeting cards. Each card captures local Knoxville charm and Great Smoky Mountain scenery.</p>
+      </div>
+      <div class="info-block">
+        <h3>What We Offer</h3>
+        <p>Our online card shop features local landscape photography by founder Richard T. Dickens. Browse a curated gallery of images and order printed 5x7 cards made and packaged in East Tennessee.</p>
+      </div>
+      <div class="info-block">
+        <h3>Our Inspiration</h3>
+        <p>Born from a love of hiking and photography shared along Tennessee’s trails, we blend artistry and emotion. We believe in slowing down and celebrating moments with something real—crafted with care.</p>
+      </div>
+      <div class="info-block">
+        <h3>About the Founder</h3>
+        <p>Richard T. Dickens is a Knoxville-based project manager, hiker, and photographer with a passion for connecting people through personal, local, and heartfelt cards that share natural beauty.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('portrait')">Portrait (5x7)</button>
+    <button class="tab-btn" onclick="switchTab('landscape')">Landscape (7x5)</button>
+  </div>
+
+  <div id="portrait-grid" class="gallery-container portrait active"></div>
+  <div id="landscape-grid" class="gallery-container landscape"></div>
+
+  <div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <button class="nav-btn prev" onclick="changeImage(-1)">&#10094;</button>
+        <img id="lightboxImg" src="">
+        <div class="watermark">Letter & Lens Co.</div>
+        <button class="nav-btn next" onclick="changeImage(1)">&#10095;</button>
+    </div>
+  </div>
+
+  <script>
+    // Simplified Image Lists (Descriptions removed)
+    const portraitImages = [
+      "p1.jpg", "p2.jpg", "p3.jpg", "p4.jpg", "p5.jpg",
+      "p6.jpg", "p7.jpg", "p8.jpg", "p9.jpg", "p10.jpg",
+      "p11.jpg", "p12.jpg", "p13.jpg", "p14.jpg", "p15.jpg",
+      "p16.jpg", "p17.jpg", "p18.jpg", "p19.jpg", "p20.jpg",
+      "p21.jpg", "p22.jpg", "p23.jpg", "p24.jpg", "p25.jpg"
+    ];
+
+    const landscapeImages = [
+      "l1.jpg", "l2.jpg", "l3.jpg", "l4.jpg", "l5.jpg",
+      "l6.jpg", "l7.jpg", "l8.jpg", "l9.jpg", "l10.jpg",
+      "l11.jpg", "l12.jpg", "l13.jpg", "l14.jpg", "l15.jpg",
+      "l16.jpg", "l17.jpg", "l18.jpg", "l19.jpg", "l20.jpg",
+      "l21.jpg", "l22.jpg", "l23.jpg", "l24.jpg", "l25.jpg"
+    ];
+
+    const fillMissing = (arr, type, size) => {
+      while(arr.length < 25) {
+        arr.push(`https://via.placeholder.com/${size}/a3ad8d/ffffff?text=${type.toUpperCase()}+${arr.length + 1}`);
+      }
+    };
+    fillMissing(portraitImages, 'Portrait', '500x700');
+    fillMissing(landscapeImages, 'Landscape', '700x500');
+
+    let currentOrientation = 'portrait';
+    let currentIndex = 0;
+
+    function init() {
+      const pGrid = document.getElementById('portrait-grid');
+      const lGrid = document.getElementById('landscape-grid');
+      portraitImages.forEach((file, index) => pGrid.appendChild(createCard(file, index, 'portrait')));
+      landscapeImages.forEach((file, index) => lGrid.appendChild(createCard(file, index, 'landscape')));
+    }
+
+    function createCard(file, index, type) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const path = file.startsWith('http') ? file : `images/${file}`;
+      card.innerHTML = `
+        <img src="${path}" alt="Gallery Image" loading="lazy">
+        <div class="watermark">Letter & Lens Co.</div>
+      `;
+      card.onclick = () => openLightbox(index, type);
+      return card;
+    }
+
+    function switchTab(type) {
+      currentOrientation = type;
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.innerText.toLowerCase().includes(type));
+      });
+      document.getElementById('portrait-grid').classList.toggle('active', type === 'portrait');
+      document.getElementById('landscape-grid').classList.toggle('active', type === 'landscape');
+    }
+
+    function openLightbox(index, type) {
+      currentIndex = index;
+      currentOrientation = type;
+      updateLightboxImage();
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function updateLightboxImage() {
+      const list = currentOrientation === 'portrait' ? portraitImages : landscapeImages;
+      const file = list[currentIndex];
+      const path = file.startsWith('http') ? file : `images/${file}`;
+      document.getElementById('lightboxImg').src = path;
+    }
+
+    function changeImage(step) {
+      const list = currentOrientation === 'portrait' ? portraitImages : landscapeImages;
+      currentIndex = (currentIndex + step + list.length) % list.length;
+      updateLightboxImage();
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    document.getElementById('lightbox').addEventListener('click', (e) => {
+      if (e.target.id === 'lightbox') closeLightbox();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === "ArrowLeft") changeImage(-1);
+      if (e.key === "ArrowRight") changeImage(1);
+      if (e.key === "Escape") closeLightbox();
+    });
+
+    init();
+  </script>
+</body>
+</html>
